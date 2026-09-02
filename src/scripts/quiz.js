@@ -1,7 +1,7 @@
 import {
   WEBHOOK_URL, REDIRECT_URL, STORAGE_KEY, OPTIONS, QUESTIONS, MAX_SCORE,
   levelFor, labelFor, isQualified, onResult, QUALIFY,
-  META_LEAD_EVENT,
+  META_LEAD_EVENT, META_CAPI_ENDPOINT, META_CUSTOM_EVENT,
 } from "../config/quiz.js";
 
 const lead = {
@@ -237,6 +237,36 @@ async function selectAnswer(points) {
   }
 }
 
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : "";
+}
+
+function metaLeadKey(person) {
+  const raw = person.email || person.telefono || (crypto.randomUUID?.() ?? String(Date.now()));
+  return String(raw).replace(/[^a-zA-Z0-9]/g, "").slice(0, 32) || String(Date.now());
+}
+
+async function sendCapi(payload) {
+  try {
+    const res = await fetch(META_CAPI_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json().catch(() => ({}));
+    console.log(`[CAPI client] ${payload.event_name} ${res.status}`, {
+      events_received: json.events_received,
+      fbtrace_id: json.fbtrace_id,
+      error: json.error,
+    });
+    return json;
+  } catch (err) {
+    console.error(`[CAPI client] Error ${payload.event_name}:`, err);
+    return null;
+  }
+}
+
 /* ---- Fin del quiz: se envía TODO junto (datos + calificación + puntaje) ---- */
 async function finishQuiz() {
   const score      = computeScore();
@@ -280,12 +310,35 @@ async function finishQuiz() {
     console.error("Error al enviar:", err);
   }
 
-  // Meta Pixel: solo leads calificados cuentan como conversión.
-  if (calificado && typeof window.fbq === "function") {
-    window.fbq("track", META_LEAD_EVENT, {
-      content_name: "Test HAR",
-      content_category: nivel,
-    });
+  // Meta Pixel + CAPI: mismos eventos, mismo momento, event_id distinto por evento.
+  // Condición: lead calificado (ocupación económica). No está invertida:
+  // si calificado === false, no se dispara ni Lead ni registroCompletado.
+  if (calificado) {
+    const ts = Date.now();
+    const leadKey = metaLeadKey(lead);
+    const leadEventId = `lead_${leadKey}_${ts}`;
+    const registroEventId = `registroCompletado_${leadKey}_${ts}`;
+    const customData = { content_name: "Test HAR", content_category: nivel };
+
+    if (typeof window.fbq === "function") {
+      window.fbq("track", META_LEAD_EVENT, customData, { eventID: leadEventId });
+      window.fbq("trackCustom", META_CUSTOM_EVENT, customData, { eventID: registroEventId });
+    }
+
+    const capiBase = {
+      event_source_url: location.href,
+      email: lead.email,
+      telefono: lead.telefono,
+      nombre: lead.nombre,
+      fbp: getCookie("_fbp"),
+      fbc: getCookie("_fbc") || (lead.fbclid ? `fb.1.${ts}.${lead.fbclid}` : undefined),
+      custom_data: customData,
+    };
+
+    await Promise.all([
+      sendCapi({ ...capiBase, event_name: META_LEAD_EVENT, event_id: leadEventId }),
+      sendCapi({ ...capiBase, event_name: META_CUSTOM_EVENT, event_id: registroEventId }),
+    ]);
   }
 
   if (REDIRECT_URL) { location.href = REDIRECT_URL; return; }

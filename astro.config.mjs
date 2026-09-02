@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel/serverless';
 
-// https://astro.build/config
 export default defineConfig({
-  // site: 'https://tusitio.com', // descomentá y poné tu dominio para SEO
+  output: 'hybrid',
+  adapter: vercel(),
 });
