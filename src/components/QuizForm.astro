@@ -1,0 +1,138 @@
+---
+import { QUALIFY } from '../config/quiz.js';
+
+const PHONE_COUNTRIES = [
+  { code: "+54",   flag: "🇦🇷", name: "Argentina" },
+  { code: "+591",  flag: "🇧🇴", name: "Bolivia" },
+  { code: "+55",   flag: "🇧🇷", name: "Brasil" },
+  { code: "+56",   flag: "🇨🇱", name: "Chile" },
+  { code: "+57",   flag: "🇨🇴", name: "Colombia" },
+  { code: "+506",  flag: "🇨🇷", name: "Costa Rica" },
+  { code: "+53",   flag: "🇨🇺", name: "Cuba" },
+  { code: "+593",  flag: "🇪🇨", name: "Ecuador" },
+  { code: "+503",  flag: "🇸🇻", name: "El Salvador" },
+  { code: "+34",   flag: "🇪🇸", name: "España" },
+  { code: "+1",    flag: "🇺🇸", name: "Estados Unidos" },
+  { code: "+502",  flag: "🇬🇹", name: "Guatemala" },
+  { code: "+504",  flag: "🇭🇳", name: "Honduras" },
+  { code: "+52",   flag: "🇲🇽", name: "México" },
+  { code: "+505",  flag: "🇳🇮", name: "Nicaragua" },
+  { code: "+507",  flag: "🇵🇦", name: "Panamá" },
+  { code: "+595",  flag: "🇵🇾", name: "Paraguay" },
+  { code: "+51",   flag: "🇵🇪", name: "Perú" },
+  { code: "+1787", flag: "🇵🇷", name: "Puerto Rico" },
+  { code: "+1809", flag: "🇩🇴", name: "Rep. Dominicana" },
+  { code: "+598",  flag: "🇺🇾", name: "Uruguay" },
+  { code: "+58",   flag: "🇻🇪", name: "Venezuela" },
+  { code: "+1",    flag: "🇨🇦", name: "Canadá" },
+  { code: "+351",  flag: "🇵🇹", name: "Portugal" },
+  { code: "+33",   flag: "🇫🇷", name: "Francia" },
+  { code: "+39",   flag: "🇮🇹", name: "Italia" },
+  { code: "+49",   flag: "🇩🇪", name: "Alemania" },
+  { code: "+44",   flag: "🇬🇧", name: "Reino Unido" },
+];
+---
+
+<div class="form-wrap" id="optin-form">
+  <div class="card">
+    <div class="progress"><i id="bar" style="width:0%"></i></div>
+
+    <!-- PASO 0 · DATOS (ahora al principio) -->
+    <div class="step active" data-step="0">
+      <h2>¿A dónde te enviamos tu resultado?</h2>
+      <div class="field">
+        <label for="nombre">Nombre y apellido</label>
+        <input id="nombre" type="text" autocomplete="name" placeholder="Tu nombre" />
+        <span class="hint" data-for="nombre"></span>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="tu@email.com" />
+        <span class="hint" data-for="email"></span>
+      </div>
+      <div class="field">
+        <label for="telefono">WhatsApp</label>
+        <div class="phone-group">
+          <button type="button" class="phone-code" id="phone-code-trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span id="phone-code-flag">{PHONE_COUNTRIES[0].flag}</span>
+            <span id="phone-code-value">{PHONE_COUNTRIES[0].code}</span>
+            <span class="phone-code-arrow">▾</span>
+          </button>
+          <input id="telefono" type="tel" inputmode="tel" autocomplete="tel" placeholder="Tu número de WhatsApp" />
+          <input type="hidden" id="telefono-cod" value={PHONE_COUNTRIES[0].code} />
+          <ul class="phone-code-list" id="phone-code-list" role="listbox" hidden>
+            {PHONE_COUNTRIES.map((c, i) => (
+              <li role="option" data-code={c.code} data-flag={c.flag} aria-selected={i === 0} class={i === 0 ? "selected" : ""}>
+                <span class="flag">{c.flag}</span>
+                <span class="name">{c.name}</span>
+                <span class="code">{c.code}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <span class="hint" data-for="telefono"></span>
+      </div>
+      <div class="field">
+        <label for="instagram">Instagram</label>
+        <input id="instagram" type="text" autocomplete="off" placeholder="Tu instagram (@usuario)" />
+        <span class="hint" data-for="instagram"></span>
+      </div>
+      <button class="btn" type="button" id="datos-continue">Continuar</button>
+    </div>
+
+    <!-- PASO 1 · CALIFICACIÓN -->
+    <div class="step" data-step="1">
+      <h2 id="qualify-text">{QUALIFY.question}</h2>
+      <div class="opts" id="qualify-opts">
+        {QUALIFY.options.map((opt) => (
+          <button class="opt" type="button" data-value={opt}>
+            <span class="opt-row"><span>{opt}</span><span class="arrow">→</span></span>
+          </button>
+        ))}
+      </div>
+
+      <!-- sub-pregunta dinámica: Profesional / Emprendedor / Empresario -->
+      <div class="opts" id="qualify-sub-opts" style="display:none;"></div>
+
+      <!-- campo libre para "Otro" -->
+      <div class="field" id="qualify-other" style="display:none; margin-top:10px;">
+        <label for="ocupacion">{QUALIFY.otherPrompt}</label>
+        <input id="ocupacion" type="text" placeholder="Escribí a qué te dedicás" />
+        <button class="btn" type="button" id="qualify-continue" style="margin-top:10px;">Continuar</button>
+      </div>
+    </div>
+
+    <!-- PASO 2 · QUIZ (11 preguntas, renderizadas por JS) -->
+    <div class="step" data-step="2">
+      <p class="q-count" id="q-count">Pregunta 1 de 11</p>
+      <h2 id="q-text">—</h2>
+      <p class="q-sub" id="q-sub">¿Con qué frecuencia te suele pasar esto?</p>
+      <div class="opts" id="q-opts"></div>
+    </div>
+
+    <!-- PASO 3 · RESULTADO -->
+     <div class="step" data-step="3">
+      <div class="done">
+        <div class="process-anim" aria-hidden="true">
+          <span class="process-ring"></span>
+          <span class="process-core"></span>
+        </div>
+        <p class="process-label">Procesando<span class="process-dots"></span></p>
+        <h2 id="result-title">Estamos procesando tus respuestas para entregarte un resultado y una guía personalizada para que puedas mejorarlo hoy mismo.</h2>
+        <p class="result-cta-copy">
+          Ponte en contacto con nosotros ahora para recibirlo.
+        </p>
+        <a href="#" id="whatsapp-btn" class="whatsapp-btn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38a9.96 9.96 0 0 0 4.79 1.22h.01c5.52 0 10-4.48 10-10s-4.48-10-10-10zm5.85 14.3c-.25.7-1.24 1.28-2.03 1.45-.55.12-1.26.21-3.67-.79-3.08-1.27-5.07-4.4-5.22-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.82-.38h.59c.19 0 .44-.07.69.53.25.6.85 2.07.92 2.22.07.15.12.33.02.53-.1.2-.15.33-.3.5-.15.18-.31.4-.45.53-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.47.13.65-.07.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.23.57.35.07.13.07.75-.18 1.45z"/>
+          </svg>
+          <span>Recibe tu resultado</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import '../scripts/quiz.js';
+</script>

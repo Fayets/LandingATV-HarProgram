@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import QuizForm from '../components/QuizForm.astro';
+
+const mockup = 'https://kjybftumiysvemmvrvde.supabase.co/storage/v1/object/public/content/test.png';
+---
+
+<Layout>
+  <Header />
+
+  <main>
+    <!-- TITULAR -->
+    <h1>
+      Descubrí gratis qué está aumentando tu estrés<br />
+      <span class="gold">y como reducirlo... en menos de 60 segundos.</span>
+    </h1>
+
+    <!-- MOCKUP -->
+    <div class="mockup-wrap">
+      <img
+        class="imgMock"
+        src={mockup}
+        alt="Descubrí gratis qué está aumentando tu estrés y como reducirlo... en menos de 60 segundos."
+        width="550"
+        height="400"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <!-- FORMULARIO -->
+    <QuizForm />
+
+    <!-- BULLETS -->
+    <ul class="bullets">
+      <li><span class="dot"></span><span>Recibí tu resultado personalizado en menos de 60 segundos.</span></li>
+      <li><span class="dot"></span><span>+500 personas ya identificaron la raiz de su estrés.</span></li>
+      <li><span class="dot"></span><span>100% gratuito — acceso instantáneo</span></li>
+    </ul>
+
+    <p class="fineprint">
+      Al dejar tus datos aceptás que HAR se ponga en contacto con vos por teléfono, mensaje o email
+      usando la información ingresada. No vendemos tu información personal. Al enviar el formulario
+      aceptás nuestra Política de Privacidad y nuestros Términos de Servicio.
+    </p>
+  </main>
+
+  <Footer />
+</Layout>

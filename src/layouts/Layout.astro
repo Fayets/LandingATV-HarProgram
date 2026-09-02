@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+import { META_PIXEL_ID } from '../config/quiz.js';
+
+const {
+  title = 'Descubrí gratis qué está aumentando tu estrés · Método HAR',
+  description = 'Descubrí gratis qué está aumentando tu estrés y como reducirlo... en menos de 60 segundos.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="author" content="HAR" />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Descubrí gratis qué está aumentando tu estrés y como reducirlo... en menos de 60 segundos." />
+    <meta property="og:description" content="Descubrí gratis qué está aumentando tu estrés y como reducirlo... en menos de 60 segundos." />
+    <link rel="shortcut icon" href="https://i.ibb.co/27t96KPK/favicon-64x64.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    {META_PIXEL_ID && (
+      <script define:vars={{ META_PIXEL_ID }} is:inline>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', META_PIXEL_ID);
+        fbq('track', 'PageView');
+      </script>
+    )}
+  </head>
+  <body>
+    {META_PIXEL_ID && (
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style="display:none"
+          src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+        />
+      </noscript>
+    )}
+    <slot />
+  </body>
+</html>

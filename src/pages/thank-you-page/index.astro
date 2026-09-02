@@ -1,0 +1,126 @@
+---
+import '../../styles/typ.css'
+---
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cancelaremos tu llamada — HAR</title>
+
+  <!-- ============ FUENTES ============ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://i.ibb.co/27t96KPK/favicon-64x64.png" type="image/png">
+</head>
+
+<body>
+  <!-- ============================================================
+       HEADER — Cambiar "HAR" por el logo <img> si lo prefieres
+       ============================================================ -->
+  <header class="header">
+    <div class="container">
+      <img class="image" src="https://i.ibb.co/ch1ymWQC/harlogosimple.png" alt="ImageNav" width="85">
+    </div>
+  </header>
+
+  <!-- ============================================================
+       HERO — MENSAJE DE AGRADECIMIENTO
+       ============================================================ -->
+  <section class="hero">
+    <div class="container">
+      <span class="badge">Registro pendiente</span>
+      <h1>
+        Cancelaremos tu llamada<br>
+        <span class="gold">si no completas estos 2 pasos.</span>
+      </h1>
+      <p>
+        Asegurese de completar estos dos pasos para que pueda <br> confirmar su llamada con nosotros.
+      </p>
+
+      <span class="badge01">PASO 1: VEA ESTE BREVE VIDEO SOBRE CÓMO PREPARARSE PARA LA LLAMADA.</span>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VIDEO — Reemplaza el placeholder por un <iframe> de YouTube/Vimeo
+       ============================================================ -->
+  <section class="video-section">
+    <div class="container">
+      <div class="video-wrapper">
+        <div class="video-placeholder">
+          <script src="https://fast.wistia.com/player.js" async is:inline></script>
+          <script src="https://fast.wistia.com/embed/pjg32tzy07.js" async type="module" is:inline></script>
+          <wistia-player media-id="pjg32tzy07" aspect="1.7777777777777777"></wistia-player>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero">
+      <span class="badge01">PASO 2: COMPLETA EL SIGUIENTE TEST PARA CONOCER TU NIVEL DE SOBRECARGA.</span>
+      <p class="p2">
+        Utilizaremos los resultados durante tu llamada <br> para identificar las causas de tu sobrecarga y cómo revertirlas
+      </p>
+      <a href="." class="btn-primary" style="margin-top: 20px;">HACER EL TEST</a>
+  </section>
+
+  <!-- ============================================================
+       CASOS DE ÉXITO
+       ============================================================ -->
+<section class="cases">
+  <div class="container">
+    <h2 class="section-title">Testimonios de clientes</h2>
+    <p class="section-subtitle">Estos son solo algunos resultados de nuestros clientes</p>
+
+    <div class="cases-grid">
+
+      <!-- CASO 1 -->
+      <div class="case-card">
+        <h3 class="case-title">
+          María José.<span class="highlight"><br>Recuperó el control de su día a día.</span>
+        </h3>
+        <iframe width="420" height="300"
+          src="https://www.youtube.com/embed/h2FJNmdvcoY" allowfullscreen>
+        </iframe>
+      </div>
+      
+      <!-- CASO 2 -->
+      <div class="case-card">
+        <h3 class="case-title">
+          Rocio, abogada.<span class="highlight"><br>Dejó de llevarse el trabajo a casa.</span>
+        </h3>
+        <iframe width="500" height="300"
+          src="https://www.youtube.com/embed/-F3pFrGVLQk">
+        </iframe>
+      </div>
+
+      <!-- CASO 3 -->
+      <div class="case-card">
+        <h3 class="case-title">
+          Nicolás, empresario.<span class="highlight"><br>Su empresa dejó de controlar su vida.</span>
+        </h3>
+        <iframe width="420" height="300"
+          src="https://www.youtube.com/embed/DftBIPmTpkA">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- ============================================================
+       FOOTER / DISCLAIMER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <p>
+        Este sitio web no forma parte de YouTube, Google o Facebook; Google Inc o Facebook Inc.
+        Tampoco está respaldado por YouTube, Google o Facebook de ninguna manera.
+        FACEBOOK es una marca registrada de FACEBOOK Inc. YOUTUBE es una marca registrada de GOOGLE Inc.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
