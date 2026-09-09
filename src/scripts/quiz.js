@@ -365,6 +365,10 @@ function showResult() {
     label.textContent = "¡Listo!";
     wa.classList.remove("is-disabled");
     wa.removeAttribute("aria-disabled");
+
+    setTimeout(() => {
+      window.open(wa.href, "_blank", "noopener");
+    }, 3000);
   }, 5000);
 }
 
