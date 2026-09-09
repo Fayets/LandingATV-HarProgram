@@ -113,16 +113,19 @@ const PHONE_COUNTRIES = [
     <!-- PASO 3 · RESULTADO -->
      <div class="step" data-step="3">
       <div class="done">
-        <div class="process-anim" aria-hidden="true">
+        <div class="process-anim" id="process-anim" aria-hidden="true">
           <span class="process-ring"></span>
           <span class="process-core"></span>
+          <svg class="process-check" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12.5l5 5L20 7" />
+          </svg>
         </div>
-        <p class="process-label">Procesando<span class="process-dots"></span></p>
+        <p class="process-label" id="process-label">Procesando<span class="process-dots"></span></p>
         <h2 id="result-title">Estamos procesando tus respuestas para entregarte un resultado y una guía personalizada para que puedas mejorarlo hoy mismo.</h2>
         <p class="result-cta-copy">
           Ponte en contacto con nosotros ahora para recibirlo.
         </p>
-        <a href="#" id="whatsapp-btn" class="whatsapp-btn" target="_blank" rel="noopener">
+        <a href="#" id="whatsapp-btn" class="whatsapp-btn is-disabled" aria-disabled="true" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
             <path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38a9.96 9.96 0 0 0 4.79 1.22h.01c5.52 0 10-4.48 10-10s-4.48-10-10-10zm5.85 14.3c-.25.7-1.24 1.28-2.03 1.45-.55.12-1.26.21-3.67-.79-3.08-1.27-5.07-4.4-5.22-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.82-.38h.59c.19 0 .44-.07.69.53.25.6.85 2.07.92 2.22.07.15.12.33.02.53-.1.2-.15.33-.3.5-.15.18-.31.4-.45.53-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.47.13.65-.07.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.23.57.35.07.13.07.75-.18 1.45z"/>
           </svg>

@@ -318,7 +318,10 @@ async function finishQuiz() {
     const leadKey = metaLeadKey(lead);
     const leadEventId = `lead_${leadKey}_${ts}`;
     const registroEventId = `registroCompletado_${leadKey}_${ts}`;
-    const customData = { content_name: "Test HAR", content_category: nivel };
+    // Ojo: nunca mandar `nivel` (o cualquier dato que sugiera estado de
+    // salud/estrés) como parámetro del evento — Meta lo bloquea porque
+    // metodohar.com está categorizado como "Salud y bienestar".
+    const customData = { content_name: "Lead Generico" };
 
     if (typeof window.fbq === "function") {
       window.fbq("track", META_LEAD_EVENT, customData, { eventID: leadEventId });
@@ -349,10 +352,20 @@ async function finishQuiz() {
 
 function showResult() {
   const wa = document.getElementById("whatsapp-btn");
+  const anim = document.getElementById("process-anim");
+  const label = document.getElementById("process-label");
   const msg = `Hola titi, quiero mi resultado personalizado. Mi nombre es: ${lead.nombre}`;
   wa.href = `https://wa.me/5492615870933?text=${encodeURIComponent(msg)}`;
   showStep(3);
   setBar(TOTAL_SCREENS);
+
+  setTimeout(() => {
+    anim.classList.add("is-done");
+    label.classList.add("is-done");
+    label.textContent = "¡Listo!";
+    wa.classList.remove("is-disabled");
+    wa.removeAttribute("aria-disabled");
+  }, 5000);
 }
 
 /* ---- init ---- */

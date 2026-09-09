@@ -21,24 +21,96 @@ export const OPTIONS = [
 
 /* Opciones propias de la última pregunta (urgencia) */
 export const URGENCY_OPTIONS = [
-  { label: "Ya esperé demasiado, necesito cambiar esta situación ahora", points: 3 },
-  { label: "Quiero empezar a resolverlo antes que empeore",              points: 2 },
+  { label: "Quiero empezar a resolverlo antes que empeore",              points: 0 },
   { label: "Sé que no puedo seguir así por mucho tiempo",                points: 1 },
-  { label: "Hoy elijo convivir con este nivel de sobrecarga",            points: 0 },
+  { label: "Ya esperé demasiado, necesito cambiar esta situación ahora", points: 2 },
 ];
 
-/* Tus 10 preguntas + la de urgencia al final (11 en total) */
+/* 10 preguntas reformuladas (situaciones puntuales del día a día, no
+   síntomas tipo diagnóstico) + la de urgencia al final (11 en total).
+   Cada pregunta tiene sus propias 3 opciones, ordenadas de mejor a peor
+   (0, 1, 2 puntos). */
 export const QUESTIONS = [
-  { text: "Termino el día sin poder bajar un cambio, aunque ya no esté en el trabajo." },
-  { text: "Me cuesta apagar la cabeza con temas del trabajo o del día, incluso cuando ya no hay nada urgente." },
-  { text: "Puedo pasar de estar tranquilo a reaccionar de más en cuestión de segundos." },
-  { text: "Me cuesta desconectar de verdad: o me quedo enganchado al ritmo del día, o al otro día arranco sin batería." },
-  { text: "Siento que cargo con más responsabilidad de la que puedo sostener, y que si aflojo, algo se cae." },
-  { text: "Últimamente prefiero aislarme un poco de la gente antes que mostrar que el ritmo me está superando." },
-  { text: "Me enojo por cosas mínimas, reacciono mal con las personas que mas quiero (pareja, hijos) y después me siento culpable." },
-  { text: "Siento que mi vida personal (pareja, hijos, amigos, tiempo para mí) quedó en un segundo plano frente a mis responsabilidades." },
-  { text: "Me preocupa que, si sigo así, esto termine afectando mi rendimiento, mi trabajo o mis vínculos más importantes en poco tiempo." },
-  { text: "Aunque por fuera parece que todo va bien, por dentro siento que estoy en piloto automático y no logro nombrar por qué." },
+  {
+    text: "Cuando termina tu jornada laboral, ¿qué tan fácil te resulta desconectar?",
+    options: [
+      { label: "Corto bien, el trabajo se queda en el trabajo", points: 0 },
+      { label: "Me cuesta un poco desconectar del trabajo", points: 1 },
+      { label: "No logro bajar un cambio en todo el día", points: 2 },
+    ],
+  },
+  {
+    text: "En tus días/momentos libres ¿qué hace tu cabeza?",
+    options: [
+      { label: "Se relaja, disfruto el momento libre", points: 0 },
+      { label: "Tarda un poco en soltar, pero afloja", points: 1 },
+      { label: "No para, me cuesta disfrutar los momentos libres", points: 2 },
+    ],
+  },
+  {
+    text: "Ante un imprevisto en el día, ¿cómo reaccionás?",
+    options: [
+      { label: "Lo manejo tranquilo, sin sobresaltarme", points: 0 },
+      { label: "Me altero un momento y enseguida me calmo", points: 1 },
+      { label: "Puedo pasar de tranquilo a explotar en segundos", points: 2 },
+    ],
+  },
+  {
+    text: "En tus días libres o fines de semana, ¿cómo estás de energía?",
+    options: [
+      { label: "Recargo bien, arranco la semana con pilas", points: 0 },
+      { label: "Recargo a medias, no estoy al 100%", points: 1 },
+      { label: "Arranco la semana sin batería, como si no hubiera descansado", points: 2 },
+    ],
+  },
+  {
+    text: "Frente a la cantidad de responsabilidades que tenés hoy, ¿cómo te sentís sosteniéndolas?",
+    options: [
+      { label: "Cómodo, tengo margen de sobra", points: 0 },
+      { label: "Ajustado, pero controlo la situación", points: 1 },
+      { label: "Siento que si aflojo un poco, algo se cae", points: 2 },
+    ],
+  },
+  {
+    text: "Cuando la presión del día a día te empieza a superar, ¿qué solés hacer?",
+    options: [
+      { label: "Lo hablo con alguien y pido una mano", points: 0 },
+      { label: "Sigo adelante solo, sin pedir ayuda", points: 1 },
+      { label: "Necesito espacio y no quiero que nadie me hable", points: 2 },
+    ],
+  },
+  {
+    text: "Ante cosas mínimas que te molestan en el día, ¿cómo reaccionás?",
+    options: [
+      { label: "Lo dejo pasar rápido, no me quedo enganchado", points: 0 },
+      { label: "Me quedo pensándolo un rato, pero se me pasa", points: 1 },
+      { label: "Reacciono mal y termino sintiéndome culpable por eso", points: 2 },
+    ],
+  },
+  {
+    text: "¿Qué lugar está ocupando tu tiempo libre o tus actividades personales últimamente?",
+    options: [
+      { label: "El de siempre, sostengo mis espacios sin problema", points: 0 },
+      { label: "Achiqué algunos espacios, pero mantengo lo esencial", points: 1 },
+      { label: "Prácticamente no tengo espacio para nada que no sea trabajo o responsabilidades", points: 2 },
+    ],
+  },
+  {
+    text: "Si seguís al ritmo actual, ¿qué es lo que más te preocupa que pase?",
+    options: [
+      { label: "Nada en particular, siento que puedo sostenerlo", points: 0 },
+      { label: "Que me falte energía en algún momento puntual", points: 1 },
+      { label: "Que termine afectando cosas importantes en poco tiempo", points: 2 },
+    ],
+  },
+  {
+    text: "¿Qué tan seguido sentís que estás \"funcionando en piloto automático\"?",
+    options: [
+      { label: "Casi nunca, estoy bastante presente en lo que hago", points: 0 },
+      { label: "Me pasa de vez en cuando", points: 1 },
+      { label: "Me pasa seguido y no logro mejorarlo", points: 2 },
+    ],
+  },
   {
     text: "¿Qué tan importante es para vos resolver esta situación que estás viviendo hoy?",
     options: URGENCY_OPTIONS,

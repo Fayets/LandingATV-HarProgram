@@ -131,20 +131,25 @@ h1 .gold {
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
-  padding: clamp(12px, 3vw, 24px) clamp(8px, 2vw, 16px) 0;
-  line-height: 0;
-  overflow: hidden;
+  padding: clamp(24px, 6vw, 40px) clamp(8px, 2vw, 16px) clamp(12px, 3vw, 24px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .imgMock {
   display: block;
-  width: 100%;
-  max-width: 100%;
+  width: 40%;
+  flex: 0 0 auto;
   height: auto;
-  margin: 0 auto;
-  mix-blend-mode: screen;
-  filter: sepia(10%) saturate(95%) hue-rotate(3deg);
+  border-radius: 16px;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, .55);
+  transition: transform .3s ease;
 }
+
+.imgMock:nth-child(1) { transform: rotate(-9deg); z-index: 1; margin-right: -14%; }
+.imgMock:nth-child(2) { transform: rotate(0deg) translateY(-10px) scale(1.08); z-index: 3; }
+.imgMock:nth-child(3) { transform: rotate(9deg); z-index: 2; margin-left: -14%; }
 /* ============================================================
    TARJETA FORMULARIO — glassmorphism con borde dorado
    ============================================================ */
@@ -515,6 +520,7 @@ footer {
   border-right-color: var(--gold);
   animation: process-spin .85s linear infinite;
   box-shadow: 0 0 18px rgba(229,196,106,.18);
+  transition: opacity .25s ease;
 }
 .process-core {
   position: absolute; inset: 16px;
@@ -522,6 +528,26 @@ footer {
   background: var(--gold-grad);
   box-shadow: 0 0 22px rgba(229,196,106,.45);
   animation: process-pulse 1.4s ease-in-out infinite;
+  transition: opacity .25s ease;
+}
+.process-check {
+  position: absolute; inset: 0;
+  margin: auto;
+  color: #1a1206;
+  opacity: 0;
+  transform: scale(.5);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.process-anim.is-done .process-ring { opacity: 0; animation: none; }
+.process-anim.is-done .process-core {
+  opacity: 1;
+  animation: none;
+  background: var(--gold-grad);
+  box-shadow: 0 0 22px rgba(229,196,106,.45);
+}
+.process-anim.is-done .process-check {
+  opacity: 1;
+  transform: scale(1);
 }
 .process-label {
   font-family: var(--font-display);
@@ -536,6 +562,7 @@ footer {
   content: "";
   animation: process-dots 1.4s steps(4, end) infinite;
 }
+.process-label.is-done .process-dots { display: none; }
 @keyframes process-spin {
   to { transform: rotate(360deg); }
 }
@@ -587,8 +614,11 @@ footer {
   }
 
   .imgMock {
-    max-width: 90%;
+    width: 38%;
   }
+
+  .imgMock:nth-child(1) { margin-right: -10%; }
+  .imgMock:nth-child(3) { margin-left: -10%; }
 
   .form-wrap {
     padding-inline: 2px;
@@ -634,7 +664,10 @@ footer {
   h1           { font-size: 2.5rem; line-height: 1.1; padding: 0 32px; }
   .only-mobile { display: none; }
   .only-desktop{ display: inline; }
-  .mockup-wrap { padding-top: 10px; max-width: 550px; }
+  .mockup-wrap { padding-top: 20px; max-width: 520px; }
+  .imgMock { width: 200px; }
+  .imgMock:nth-child(1) { margin-right: -45px; }
+  .imgMock:nth-child(3) { margin-left: -45px; }
   .form-wrap   { margin-top: 24px; }
   .card        { padding: 24px; }
   .bullets     { margin-top: 22px; }
@@ -678,3 +711,10 @@ footer {
 }
 .whatsapp-btn:active { transform: translateY(0); }
 .whatsapp-btn svg { flex-shrink: 0; }
+.whatsapp-btn.is-disabled {
+  opacity: .45;
+  filter: grayscale(.5);
+  pointer-events: none;
+  transform: none;
+  scale: 1;
+}

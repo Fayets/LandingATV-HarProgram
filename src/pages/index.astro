@@ -4,7 +4,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import QuizForm from '../components/QuizForm.astro';
 
-const mockup = 'https://kjybftumiysvemmvrvde.supabase.co/storage/v1/object/public/content/test.png';
+const mockups = [
+  { src: '/images/mockup-1-test.png', alt: 'Test de sobrecarga: descubrí tu nivel en menos de 2 minutos.' },
+  { src: '/images/mockup-2-descubri.png', alt: 'Descubrí cómo tu sobrecarga impacta tu vida hoy.' },
+  { src: '/images/mockup-3-guia.png', alt: 'Recibí gratis tu guía para bajar tu sobrecarga.' },
+];
 ---
 
 <Layout>
@@ -13,21 +17,23 @@ const mockup = 'https://kjybftumiysvemmvrvde.supabase.co/storage/v1/object/publi
   <main>
     <!-- TITULAR -->
     <h1>
-      Descubrí gratis qué está aumentando tu estrés<br />
-      <span class="gold">y como reducirlo... en menos de 60 segundos.</span>
+      Descubrí gratis qué está aumentando tu sobrecarga<br />
+      <span class="gold">y como reducirla... en menos de 60 segundos.</span>
     </h1>
 
     <!-- MOCKUP -->
     <div class="mockup-wrap">
-      <img
-        class="imgMock"
-        src={mockup}
-        alt="Descubrí gratis qué está aumentando tu estrés y como reducirlo... en menos de 60 segundos."
-        width="550"
-        height="400"
-        loading="eager"
-        decoding="async"
-      />
+      {mockups.map((m, i) => (
+        <img
+          class="imgMock"
+          src={m.src}
+          alt={m.alt}
+          width="600"
+          height="1158"
+          loading={i === 0 ? 'eager' : 'lazy'}
+          decoding="async"
+        />
+      ))}
     </div>
 
     <!-- FORMULARIO -->
@@ -36,7 +42,7 @@ const mockup = 'https://kjybftumiysvemmvrvde.supabase.co/storage/v1/object/publi
     <!-- BULLETS -->
     <ul class="bullets">
       <li><span class="dot"></span><span>Recibí tu resultado personalizado en menos de 60 segundos.</span></li>
-      <li><span class="dot"></span><span>+500 personas ya identificaron la raiz de su estrés.</span></li>
+      <li><span class="dot"></span><span>+500 personas ya identificaron la raiz de su sobrecarga.</span></li>
       <li><span class="dot"></span><span>100% gratuito — acceso instantáneo</span></li>
     </ul>
 
