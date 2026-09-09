@@ -6,7 +6,7 @@ export const WEBHOOK_URL  = "https://services.leadconnectorhq.com/hooks/6AXxx9s9
 export const REDIRECT_URL = "";
 export const STORAGE_KEY  = "har_test_estres";
 
-export const META_PIXEL_ID   = "1088300166890587"; // Pixel ID de Meta (Events Manager)
+export const META_PIXEL_ID   = "1620514326094396"; // Pixel ID de Meta (Events Manager)
 export const META_LEAD_EVENT = "Lead"; // Evento estándar que se dispara solo para leads calificados
 export const META_CAPI_ENDPOINT = "/api/capi";
 export const META_CUSTOM_EVENT = "registroCompletado";
