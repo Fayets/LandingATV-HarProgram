@@ -1,7 +1,7 @@
 import {
   WEBHOOK_URL, REDIRECT_URL, STORAGE_KEY, OPTIONS, QUESTIONS, MAX_SCORE,
   levelFor, labelFor, isQualified, onResult, QUALIFY,
-  META_LEAD_EVENT, META_CAPI_ENDPOINT, META_CUSTOM_EVENT,
+  META_LEAD_EVENT, META_CAPI_ENDPOINT, META_REGISTRATION_EVENT,
 } from "../config/quiz.js";
 
 const lead = {
@@ -28,11 +28,31 @@ const qText  = document.getElementById("q-text");
 const qSub   = document.getElementById("q-sub");
 const qOpts  = document.getElementById("q-opts");
 
+const topbar   = document.getElementById("quiz-topbar");
+const quizBar  = document.getElementById("quiz-bar");
+const quizCount = document.getElementById("quiz-count");
+const QUIZ_SCREENS = TOTAL_SCREENS - 1; // sin la pantalla de datos
+
 const setBar = (current) => { bar.style.width = Math.min(100, (current / TOTAL_SCREENS) * 100) + "%"; };
+
+// Barra superior del modo quiz: calificación = 1, pregunta i = 2 + i, resultado = total.
+function setQuizProgress(screen) {
+  const shown = Math.max(1, Math.min(screen, QUIZ_SCREENS));
+  quizBar.style.width = (shown / QUIZ_SCREENS) * 100 + "%";
+  quizCount.innerHTML = `Pregunta ${String(shown).padStart(2, "0")} <b>/ ${QUIZ_SCREENS}</b>`;
+}
 
 function showStep(n) {
   steps.forEach((s) => s.classList.toggle("active", s.dataset.step == n));
-  document.getElementById("optin-form").scrollIntoView({ behavior: "smooth", block: "center" });
+  if (n >= 1) {
+    // A partir de la calificación, el quiz ocupa toda la página.
+    document.body.classList.add("quiz-mode");
+    topbar.hidden = false;
+    if (n === 1) setQuizProgress(1);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  } else {
+    document.getElementById("optin-form").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 }
 
 const computeScore = () => answers.reduce((s, v) => s + (v || 0), 0);
@@ -129,12 +149,14 @@ document.getElementById("datos-continue").addEventListener("click", () => {
   const telCod      = document.getElementById("telefono-cod").value;
   const telNum      = document.getElementById("telefono").value.trim();
   const instagram   = document.getElementById("instagram").value.trim();
+  const acepto      = document.getElementById("acepto").checked;
 
   let ok = true;
   ok = setErr("nombre",    nombre.length < 2 ? "Escribí tu nombre" : "") && ok;
   ok = setErr("email",     /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ? "" : "Revisá tu email") && ok;
   ok = setErr("telefono",  telNum.replace(/\D/g, "").length < 6 ? "Revisá tu número" : "") && ok;
   ok = setErr("instagram", instagram.length < 2 ? "Escribí tu usuario de Instagram" : "") && ok;
+  ok = setErr("acepto",    acepto ? "" : "Tenés que aceptar los términos para continuar") && ok;
   if (!ok) return;
 
   const telefono = `${telCod} ${telNum}`;
@@ -223,6 +245,7 @@ function renderQuestion() {
   });
 
   setBar(2 + qIndex + 1);
+  setQuizProgress(2 + qIndex);
 }
 
 async function selectAnswer(points) {
@@ -312,20 +335,19 @@ async function finishQuiz() {
 
   // Meta Pixel + CAPI: mismos eventos, mismo momento, event_id distinto por evento.
   // Condición: lead calificado (ocupación económica). No está invertida:
-  // si calificado === false, no se dispara ni Lead ni registroCompletado.
+  // si calificado === false, no se dispara ni Lead ni CompleteRegistration.
   if (calificado) {
     const ts = Date.now();
     const leadKey = metaLeadKey(lead);
     const leadEventId = `lead_${leadKey}_${ts}`;
-    const registroEventId = `registroCompletado_${leadKey}_${ts}`;
-    // Ojo: nunca mandar `nivel` (o cualquier dato que sugiera estado de
-    // salud/estrés) como parámetro del evento — Meta lo bloquea porque
-    // metodohar.com está categorizado como "Salud y bienestar".
+    const registroEventId = `registration_${leadKey}_${ts}`;
+    // Ojo: nunca mandar `nivel`, puntaje ni respuestas como parámetro del
+    // evento — Meta restringe los parámetros custom en categorías sensibles.
     const customData = { content_name: "Lead Generico" };
 
     if (typeof window.fbq === "function") {
       window.fbq("track", META_LEAD_EVENT, customData, { eventID: leadEventId });
-      window.fbq("trackCustom", META_CUSTOM_EVENT, customData, { eventID: registroEventId });
+      window.fbq("track", META_REGISTRATION_EVENT, customData, { eventID: registroEventId });
     }
 
     const capiBase = {
@@ -340,24 +362,25 @@ async function finishQuiz() {
 
     await Promise.all([
       sendCapi({ ...capiBase, event_name: META_LEAD_EVENT, event_id: leadEventId }),
-      sendCapi({ ...capiBase, event_name: META_CUSTOM_EVENT, event_id: registroEventId }),
+      sendCapi({ ...capiBase, event_name: META_REGISTRATION_EVENT, event_id: registroEventId }),
     ]);
   }
 
   if (REDIRECT_URL) { location.href = REDIRECT_URL; return; }
 
   const redirected = onResult({ score, nivel, lead });
-  if (!redirected) showResult(score, nivel);
+  if (!redirected) showResult();
 }
 
-function showResult() {
+function showResult({ autoOpen = true } = {}) {
   const wa = document.getElementById("whatsapp-btn");
   const anim = document.getElementById("process-anim");
   const label = document.getElementById("process-label");
-  const msg = `Hola titi, quiero mi resultado personalizado. Mi nombre es: ${lead.nombre}`;
+  const msg = `Hola titi, ya completé el test. Mi nombre es: ${lead.nombre}. Quiero mi guía personalizada.`;
   wa.href = `https://wa.me/5492615870933?text=${encodeURIComponent(msg)}`;
   showStep(3);
   setBar(TOTAL_SCREENS);
+  setQuizProgress(QUIZ_SCREENS);
 
   setTimeout(() => {
     anim.classList.add("is-done");
@@ -366,10 +389,25 @@ function showResult() {
     wa.classList.remove("is-disabled");
     wa.removeAttribute("aria-disabled");
 
-    setTimeout(() => {
-      window.open(wa.href, "_blank", "noopener");
-    }, 3000);
+    if (autoOpen) {
+      setTimeout(() => {
+        window.open(wa.href, "_blank", "noopener");
+      }, 3000);
+    }
   }, 5000);
 }
 
 /* ---- init ---- */
+
+// Solo en desarrollo: ?preview=quiz | ?preview=resultado para ver esas
+// pantallas sin completar el formulario. Vite lo elimina del build.
+if (import.meta.env.DEV) {
+  const preview = new URLSearchParams(location.search).get("preview");
+  if (preview === "resultado") {
+    lead.nombre = "Franco";
+    showResult({ autoOpen: false });
+  } else if (preview === "quiz") {
+    setBar(1);
+    showStep(1);
+  }
+}

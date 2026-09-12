@@ -7,7 +7,7 @@ import QuizForm from '../components/QuizForm.astro';
 const mockups = [
   { src: '/images/mockup-1-test.jpg', alt: 'Ejercicio de autoobservación: descubrí cómo estás llevando tu día a día.' },
   { src: '/images/mockup-2-descubri.jpg', alt: 'Descubrí cómo impacta tu día a día en 6 áreas de tu vida.' },
-  { src: '/images/mockup-3-guia.jpg', alt: 'Recibí gratis una guía para gestionar tus emociones y recuperar el equilibrio.' },
+  { src: '/images/mockup-3-guia.jpg', alt: 'Recibí gratis una guía para reducir tu sobrecarga y recuperar el control.' },
 ];
 ---
 
@@ -17,33 +17,39 @@ const mockups = [
   <main>
     <!-- TITULAR -->
     <h1>
-      Descubrí gratis que esta sobrecargando tu mente<br />
-      <span class="gold">y como reducirlo... En menos de 60 segundo</span>
+      Descubrí gratis qué está sobrecargándote<br />
+      <span class="gold">y cómo mejorarlo... En menos de 60 segundos</span>
     </h1>
 
-    <!-- MOCKUP -->
-    <div class="mockup-wrap">
-      {mockups.map((m, i) => (
-        <img
-          class="imgMock"
-          src={m.src}
-          alt={m.alt}
-          width="600"
-          height="1158"
-          loading={i === 0 ? 'eager' : 'lazy'}
-          decoding="async"
-        />
-      ))}
+    <div class="hero-grid">
+      <!-- MOCKUP (izquierda en desktop, arriba en mobile) -->
+      <div class="hero-visual">
+        <div class="mockup-wrap">
+          {mockups.map((m, i) => (
+            <img
+              class="imgMock"
+              src={m.src}
+              alt={m.alt}
+              width="600"
+              height="1158"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          ))}
+        </div>
+      </div>
+
+      <!-- FORMULARIO (derecha en desktop) -->
+      <div class="hero-form">
+        <QuizForm />
+      </div>
     </div>
 
-    <!-- FORMULARIO -->
-    <QuizForm />
-
-    <!-- BULLETS -->
-    <ul class="bullets">
-      <li><span class="dot"></span><span>Recibí tu resultado personalizado en menos de 60 segundos.</span></li>
-      <li><span class="dot"></span><span>+500 personas ya identificaron la raiz de su sobrecarga.</span></li>
-      <li><span class="dot"></span><span>100% gratuito — acceso instantáneo</span></li>
+    <!-- CIFRAS -->
+    <ul class="stats">
+      <li><strong>+500</strong><span>personas ya identificaron la raíz de su sobrecarga</span></li>
+      <li><strong>60 seg</strong><span>y recibís tu guía personalizada por WhatsApp</span></li>
+      <li><strong>100%</strong><span>gratuito · acceso instantáneo</span></li>
     </ul>
 
     <p class="fineprint">

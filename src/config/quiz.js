@@ -4,12 +4,14 @@
 
 export const WEBHOOK_URL  = "https://services.leadconnectorhq.com/hooks/6AXxx9s97IS27Fdc7uxK/webhook-trigger/0e78fa98-aa0c-4162-9e8b-d5d3b0c4178e";
 export const REDIRECT_URL = "";
-export const STORAGE_KEY  = "har_test_estres";
+export const STORAGE_KEY  = "har_test_ritmo";
 
-export const META_PIXEL_ID   = "1620514326094396"; // Pixel ID de Meta (Events Manager)
+export const META_PIXEL_ID   = "1849868122524045"; // Pixel ID de Meta (Events Manager)
 export const META_LEAD_EVENT = "Lead"; // Evento estándar que se dispara solo para leads calificados
 export const META_CAPI_ENDPOINT = "/api/capi";
-export const META_CUSTOM_EVENT = "registroCompletado";
+// Evento estándar de Meta: los eventos custom quedan bloqueados cuando el
+// sitio cae en una categoría restringida (core setup).
+export const META_REGISTRATION_EVENT = "CompleteRegistration";
 
 
 /* Opciones estándar — Siempre primero, Nunca al final */
@@ -56,11 +58,11 @@ export const QUESTIONS = [
     ],
   },
   {
-    text: "En tus días libres o fines de semana, ¿cómo estás de energía?",
+    text: "Después de un fin de semana, ¿cómo arrancás la semana?",
     options: [
-      { label: "Recargo bien, arranco la semana con pilas", points: 0 },
-      { label: "Recargo a medias, no estoy al 100%", points: 1 },
-      { label: "Arranco la semana sin batería, como si no hubiera descansado", points: 2 },
+      { label: "Con pilas, listo para arrancar", points: 0 },
+      { label: "A media máquina, no estoy al 100%", points: 1 },
+      { label: "Como si no hubiera parado, sin batería", points: 2 },
     ],
   },
   {
@@ -84,7 +86,7 @@ export const QUESTIONS = [
     options: [
       { label: "Lo dejo pasar rápido, no me quedo enganchado", points: 0 },
       { label: "Me quedo pensándolo un rato, pero se me pasa", points: 1 },
-      { label: "Reacciono mal y termino sintiéndome culpable por eso", points: 2 },
+      { label: "Reacciono mal y después me arrepiento", points: 2 },
     ],
   },
   {
@@ -99,7 +101,7 @@ export const QUESTIONS = [
     text: "Si seguís al ritmo actual, ¿qué es lo que más te preocupa que pase?",
     options: [
       { label: "Nada en particular, siento que puedo sostenerlo", points: 0 },
-      { label: "Que me falte energía en algún momento puntual", points: 1 },
+      { label: "Que en algún momento puntual no llegue con todo", points: 1 },
       { label: "Que termine afectando cosas importantes en poco tiempo", points: 2 },
     ],
   },
@@ -140,7 +142,7 @@ export function labelFor(nivel) {
 }
 
 /* Calificado/Descalificado para el Pixel de Meta: se basa en el PERFIL
-   ECONÓMICO (ocupación + sub-respuesta), no en el nivel de sobrecarga.
+   ECONÓMICO (ocupación + sub-respuesta), no en el resultado del test.
      - Empresario: califica siempre.
      - Emprendedor: califica solo con "vivo de mi emprendimiento" o
        "tengo un equipo de personas que trabajan conmigo".
