@@ -372,12 +372,33 @@ async function finishQuiz() {
   if (!redirected) showResult();
 }
 
+// Mensaje prearmado de WhatsApp: nombre, perfil y las respuestas del test.
+function whatsappMessage() {
+  const perfil = [lead.ocupacion, lead.calificacion].filter(Boolean).join(" · ");
+  const respuestas = QUESTIONS.map((q, i) => {
+    const opts = q.options || OPTIONS;
+    const idx = opts.findIndex((o) => o.points === answers[i]);
+    const elegida = idx >= 0 ? `${String.fromCharCode(65 + idx)}) ${opts[idx].label}` : "-";
+    return `${i + 1}. ${q.text}\n→ ${elegida}`;
+  }).join("\n\n");
+
+  return [
+    "Hola titi, ya completé el test y quiero mi guía personalizada.",
+    "",
+    `Nombre: ${lead.nombre}`,
+    perfil ? `A qué me dedico: ${perfil}` : null,
+    "",
+    "Mis respuestas:",
+    "",
+    respuestas,
+  ].filter((l) => l !== null).join("\n");
+}
+
 function showResult({ autoOpen = true } = {}) {
   const wa = document.getElementById("whatsapp-btn");
   const anim = document.getElementById("process-anim");
   const label = document.getElementById("process-label");
-  const msg = `Hola titi, ya completé el test. Mi nombre es: ${lead.nombre}. Quiero mi guía personalizada.`;
-  wa.href = `https://wa.me/5492615870933?text=${encodeURIComponent(msg)}`;
+  wa.href = `https://wa.me/5492615870933?text=${encodeURIComponent(whatsappMessage())}`;
   showStep(3);
   setBar(TOTAL_SCREENS);
   setQuizProgress(QUIZ_SCREENS);
@@ -404,7 +425,8 @@ function showResult({ autoOpen = true } = {}) {
 if (import.meta.env.DEV) {
   const preview = new URLSearchParams(location.search).get("preview");
   if (preview === "resultado") {
-    lead.nombre = "Franco";
+    Object.assign(lead, { nombre: "Franco", ocupacion: "Empresario", calificacion: "Entre 2 y 5 personas" });
+    answers.fill(1);
     showResult({ autoOpen: false });
   } else if (preview === "quiz") {
     setBar(1);

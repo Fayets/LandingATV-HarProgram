@@ -21,118 +21,69 @@ export const OPTIONS = [
   { label: "Nunca",    points: 0 },
 ];
 
-/* Opciones propias de la última pregunta (urgencia) */
-export const URGENCY_OPTIONS = [
-  { label: "Quiero empezar a resolverlo antes que empeore",              points: 0 },
-  { label: "Sé que no puedo seguir así por mucho tiempo",                points: 1 },
-  { label: "Ya esperé demasiado, necesito cambiar esta situación ahora", points: 2 },
-];
-
-/* 10 preguntas reformuladas (situaciones puntuales del día a día, no
-   síntomas tipo diagnóstico) + la de urgencia al final (11 en total).
-   Cada pregunta tiene sus propias 3 opciones, ordenadas de mejor a peor
-   (0, 1, 2 puntos). */
+/* 6 preguntas del test. Opciones en orden A/B/C = 0/1/2 puntos. */
 export const QUESTIONS = [
   {
-    text: "Cuando termina tu jornada laboral, ¿qué tan fácil te resulta desconectar?",
+    text: "¿Te despertás pensando en cosas del trabajo o en cosas que tenés que resolver?",
     options: [
-      { label: "Corto bien, el trabajo se queda en el trabajo", points: 0 },
-      { label: "Me cuesta un poco desconectar del trabajo", points: 1 },
-      { label: "No logro bajar un cambio en todo el día", points: 2 },
-    ],
-  },
-  {
-    text: "En tus días/momentos libres ¿qué hace tu cabeza?",
-    options: [
-      { label: "Se relaja, disfruto el momento libre", points: 0 },
-      { label: "Tarda un poco en soltar, pero afloja", points: 1 },
-      { label: "No para, me cuesta disfrutar los momentos libres", points: 2 },
-    ],
-  },
-  {
-    text: "Ante un imprevisto en el día, ¿cómo reaccionás?",
-    options: [
-      { label: "Lo manejo tranquilo, sin sobresaltarme", points: 0 },
-      { label: "Me altero un momento y enseguida me calmo", points: 1 },
-      { label: "Puedo pasar de tranquilo a explotar en segundos", points: 2 },
-    ],
-  },
-  {
-    text: "Después de un fin de semana, ¿cómo arrancás la semana?",
-    options: [
-      { label: "Con pilas, listo para arrancar", points: 0 },
-      { label: "A media máquina, no estoy al 100%", points: 1 },
-      { label: "Como si no hubiera parado, sin batería", points: 2 },
-    ],
-  },
-  {
-    text: "Frente a la cantidad de responsabilidades que tenés hoy, ¿cómo te sentís sosteniéndolas?",
-    options: [
-      { label: "Cómodo, tengo margen de sobra", points: 0 },
-      { label: "Ajustado, pero controlo la situación", points: 1 },
-      { label: "Siento que si aflojo un poco, algo se cae", points: 2 },
-    ],
-  },
-  {
-    text: "Cuando la presión del día a día te empieza a superar, ¿qué solés hacer?",
-    options: [
-      { label: "Lo hablo con alguien y pido una mano", points: 0 },
-      { label: "Sigo adelante solo, sin pedir ayuda", points: 1 },
-      { label: "Necesito espacio y no quiero que nadie me hable", points: 2 },
+      { label: "No, arranco el día tranquilo y a mi ritmo", points: 0 },
+      { label: "Varios días sí, me levanto y ya siento el peso de todo lo que tengo encima", points: 1 },
+      { label: "Todos los días. Antes de poner un pie en el piso ya estoy corriendo atrás de los pendientes", points: 2 },
     ],
   },
   {
     text: "Ante cosas mínimas que te molestan en el día, ¿cómo reaccionás?",
     options: [
-      { label: "Lo dejo pasar rápido, no me quedo enganchado", points: 0 },
-      { label: "Me quedo pensándolo un rato, pero se me pasa", points: 1 },
-      { label: "Reacciono mal y después me arrepiento", points: 2 },
+      { label: "Lo dejo pasar rápido, no me engancho", points: 0 },
+      { label: "Me quedo rumiándolo y me cambia el humor por un buen rato", points: 1 },
+      { label: "Exploto por cualquier cosa y después me carcome la culpa por cómo reaccioné", points: 2 },
     ],
   },
   {
-    text: "¿Qué lugar está ocupando tu tiempo libre o tus actividades personales últimamente?",
+    text: "Cuando estás en un momento que debería ser para disfrutar, ¿dónde está tu cabeza?",
     options: [
-      { label: "El de siempre, sostengo mis espacios sin problema", points: 0 },
-      { label: "Achiqué algunos espacios, pero mantengo lo esencial", points: 1 },
-      { label: "Prácticamente no tengo espacio para nada que no sea trabajo o responsabilidades", points: 2 },
+      { label: "Ahí, disfrutando de verdad lo que estoy viviendo", points: 0 },
+      { label: "Los pendientes me invaden y me cuesta volver al momento", points: 1 },
+      { label: "Estoy con el cuerpo, pero no con la cabeza. Y me doy cuenta cuando ya pasó", points: 2 },
+    ],
+  },
+  {
+    text: "¿Sentís que dejaste de ser quien eras antes del trabajo o de tener tu empresa?",
+    options: [
+      { label: "No, sigo siendo yo y mantengo lo que me gusta", points: 0 },
+      { label: "Fui dejando cosas que me hacían bien, casi sin darme cuenta", points: 1 },
+      { label: "Sí. Me miro y no me reconozco, el trabajo se llevó a la persona que era", points: 2 },
     ],
   },
   {
     text: "Si seguís al ritmo actual, ¿qué es lo que más te preocupa que pase?",
     options: [
       { label: "Nada en particular, siento que puedo sostenerlo", points: 0 },
-      { label: "Que en algún momento puntual no llegue con todo", points: 1 },
-      { label: "Que termine afectando cosas importantes en poco tiempo", points: 2 },
-    ],
-  },
-  {
-    text: "¿Qué tan seguido sentís que estás \"funcionando en piloto automático\"?",
-    options: [
-      { label: "Casi nunca, estoy bastante presente en lo que hago", points: 0 },
-      { label: "Me pasa de vez en cuando", points: 1 },
-      { label: "Me pasa seguido y no logro mejorarlo", points: 2 },
+      { label: "Que un día no dé más y todo se me venga encima", points: 1 },
+      { label: "Que cuando quiera frenar ya sea tarde y haya perdido cosas que no se recuperan", points: 2 },
     ],
   },
   {
     text: "¿Qué tan importante es para vos resolver esta situación que estás viviendo hoy?",
-    options: URGENCY_OPTIONS,
+    options: [
+      { label: "Quiero empezar a resolverlo antes de que empeore", points: 0 },
+      { label: "Sé que no puedo seguir así mucho tiempo más", points: 1 },
+      { label: "Ya esperé demasiado. Necesito cambiarlo ahora, no doy más así", points: 2 },
+    ],
   },
 ];
 
-/* Se calcula solo: 10×2 + 3 = 23 */
+/* 6 × 2 = 12 */
 export const MAX_SCORE = QUESTIONS.reduce(
   (sum, q) => sum + Math.max(...(q.options || OPTIONS).map((o) => o.points)),
   0
 );
 
-/* Curva pedida por el cliente: "alto" es el resultado por defecto para
-   la gran mayoría de respuestas reales. "moderado" tiene un rango real
-   (respuestas mayormente bajas, con algún "A veces" mezclado), y "bajo"
-   solo aparece si TODO fue "Nunca" (score = 0) — casi imposible en la
-   práctica. */
+/* Curva pedida por el cliente: "alto" es el resultado por defecto. "bajo"
+   solo con todo en A (score 0); "moderado" hasta un cuarto del máximo. */
 export function levelFor(score) {
   if (score <= 0) return "bajo";
-  if (score <= 6) return "moderado";
+  if (score <= 3) return "moderado";
   return "alto";
 }
 
